@@ -6,6 +6,7 @@ import SearchContext from "./Context/SearchContext";
 import UserContext from "./Context/UserContext";
 import { Outlet, Routes, Route } from "react-router-dom";
 import LoginPage from "./Routes/Login/Login";
+import OrderPage from "./Routes/Orders/Orders.tsx";
 import { getRequest, postRequest } from "./Utils/RequestHelper";
 
 function App() {
@@ -42,7 +43,7 @@ function App() {
 
 	useEffect(() => {
 		onInit();
-	}, []); // <-- empty dependency array
+	}, []);
 
 	return (
 		<SearchContext.Provider value={{ searchString, setSearchString }}>
@@ -50,6 +51,7 @@ function App() {
 				<Nav />
 				<Routes>
 					<Route path="/login" element={<LoginPage />} />
+					<Route path="/orders" element={<OrderPage />} />
 					<Route
 						path="/"
 						element={

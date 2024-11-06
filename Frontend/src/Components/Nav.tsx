@@ -18,7 +18,7 @@ function Nav() {
 
 	function LoginButton() {
 		if (username.length > 0) {
-			return <div className="ms-auto text-light"><span>{username}</span><button className="btn btn-light ms-2" onClick={logout}>Logout</button></div>
+			return <div className="ms-auto text-light"><Link to="/orders">{username}</Link><button className="btn btn-light ms-2" onClick={logout}>Logout</button></div>
 		}
 
 		return (

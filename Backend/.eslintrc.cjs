@@ -12,7 +12,7 @@ module.exports = {
 		ecmaVersion: 2020
 	},
 	rules: {
-		indent: ["error", "tab", { SwitchCase: 1 }],
+		indent: ["error", "tab", { SwitchCase: 1, "ignoredNodes": ["PropertyDefinition"] }],
 		"comma-dangle": ["error", "never"],
 		quotes: ["error", "double"],
 		semi: ["error", "always"],

@@ -4,6 +4,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import User from "../src/models/user.entity";
 import Book from "../src/models/book.entity";
+import Order from "../src/models/order.entity";
+import OrderItem from "../src/models/orderItem.entity";
 import bcrypt from "bcryptjs";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -21,8 +23,10 @@ await db.initialize();
 const resetDB = true;
 
 if (resetDB) {
-	await db.getRepository(User).clear();
+	await db.getRepository(OrderItem).clear();
 	await db.getRepository(Book).clear();
+	await db.getRepository(Order).clear();
+	await db.getRepository(User).clear();
 }
 
 await makeBook("Fellowship of the book", "J.R.R. Tolkien", 5, 10, false);
