@@ -1,10 +1,17 @@
 import app from "../server.js";
 import Book from "../models/book.entity.js";
+import User from "../models/user.entity.js";
+import jwt from "jsonwebtoken";
 import db from "../db/db.js";
 import { defaultJson, errorJson } from "../utils/responses.js";
 import { Context } from "hono";
+import { getSignedCookie } from "hono/cookie";
+import { validateLogin } from "../utils/auth.js";
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const bookRepository = await db.getRepository(Book);
+const userRepository = await db.getRepository(User);
 
 // Still somewhat unsure if I prefer :amount over body data
 app.patch("/api/books/:id/restock/:amount", async (c: Context) => {
@@ -30,8 +37,28 @@ app.patch("/api/books/:id/restock/:amount", async (c: Context) => {
 		return errorJson(c, "Cannot restock a limited book");
 	}
 
-	book.stock += amount;
-	await bookRepository.save(book);
+	// Because we can't trust the client, make sure the user is logged in and has a staff role
+	const token = await getSignedCookie(c, JWT_SECRET, "token");
+	if (!token) {
+		return errorJson(c, "Token is not matching signature");
+	}
 
-	return defaultJson(c, {}, "Marked as restocked!");
+	const isValid: boolean = await validateLogin(token);
+
+	if (isValid) {
+		const decoded: any = jwt.decode(token);
+		const user = await userRepository.findOneBy({ username: decoded.username });
+		
+		if(user.role.staff !== true) {
+			return errorJson(c, "You do not have the required permissions to restock books.");
+
+		}
+		
+		book.stock += amount;
+		await bookRepository.save(book);
+
+		return defaultJson(c, {}, "Marked as restocked!");
+	}
+
+	return errorJson(c, "Token invalid");
 });
