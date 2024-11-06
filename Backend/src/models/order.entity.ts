@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToMany, ManyToOne, JoinTable, UpdateDateColumn } from "typeorm";
-import { Min } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToMany, ManyToOne, JoinTable, UpdateDateColumn } from "typeorm";
 import User from "./user.entity";
 import OrderItem from "./orderItem.entity";
 

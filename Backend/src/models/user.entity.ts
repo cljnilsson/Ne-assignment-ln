@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Min} from "class-validator";
+import Role from "./role.entity";
 
 @Entity()
 class User {
@@ -14,6 +15,9 @@ class User {
 	@Min(5)
 	hashed_password: string;
 
+	@ManyToOne(() => Role, { eager: true })
+	role: Role;
+
 	@Column({ type: "date", nullable: true })
 	lastLogin: Date | null;
 
@@ -22,7 +26,7 @@ class User {
 
 	// Needs to specify type because having null as optional type makes typeorm unable to defer the type automatically
 	@Column({ nullable: true, type: "varchar" })
-	token: String | null;
+	token: string | null;
 
 	@CreateDateColumn()
 	created: Date;

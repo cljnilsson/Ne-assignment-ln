@@ -27,7 +27,8 @@ app.get("/api/user/info", async (c: Context) => {
 
 	if (isValid) {
 		const decoded: any = jwt.decode(token);
-		return defaultJson(c, { username: decoded.username }, "User info retrieved");
+		const user = await userRepository.findOneBy({ username: decoded.username });
+		return defaultJson(c, { username: decoded.username, role:  {name: user.role.name, staff: user.role.staff}}, "User info retrieved");
 	}
 
 	return errorJson(c, "Token is not valid");

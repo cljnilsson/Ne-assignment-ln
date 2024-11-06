@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, UpdateDateColumn } from "typeorm";
-import { Min } from "class-validator";
 import Book from "./book.entity";
 
 @Entity()

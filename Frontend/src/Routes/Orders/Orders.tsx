@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getRequest } from "../../Utils/RequestHelper";
 
-// Simplified Order Type
-type Order = {books: {book: {title: string, author: string, price: number}, quantity: number}[]};
+// Simplified Types
+type Book = {title: string, author: string, price: number};
+type Order = {books: {book: Book, quantity: number}[]};
 
 function Orders() {
 	const [orders, setOrders] = useState<Order[]>([]);
-	console.log(orders);
 
 	async function onInit() {
 		const orderInfo = await getRequest("/api/books/own");
@@ -32,7 +32,7 @@ function Orders() {
 				))}
                 <tr>
                     <td colSpan={3}>Total</td>
-                    <td>{o.books.reduce((acc, b) => acc + b.book.price * b.quantity, 0)}</td>
+                    <td><b>{o.books.reduce((acc, b) => acc + b.book.price * b.quantity, 0)}</b></td>
                 </tr>
 			</React.Fragment>
 		));
@@ -46,7 +46,7 @@ function Orders() {
 					<tr>
 						<th scope="col">Name</th>
 						<th scope="col">Author</th>
-						<th scope="col">Qantity</th>
+						<th scope="col">Quantity</th>
 						<th scope="col">Price</th>
 					</tr>
 				</thead>
