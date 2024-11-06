@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"moduleResolution": "Node",
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"emitDecoratorMetadata": true,
+		"strictPropertyInitialization": false,
+		"allowJs": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"inlineSourceMap": true,
+		"isolatedModules": true,
+		"module": "esnext",
+		"moduleDetection": "force",
+		"strict": false,
+		"target": "esnext",
+		"useDefineForClassFields": true,
+		"outDir": "./dist",
+		"rootDir": "./src"
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "seed", "dist"]
+}

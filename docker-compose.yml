@@ -1,0 +1,16 @@
+services:
+  ne-ln-rest-api:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+
+  ne-ln-frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - ne-ln-rest-api

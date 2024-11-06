@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "start": "npx tsx src/index.ts",
+    "seed": "npx tsx seed/seeder.ts",
+    "prod": "node dist/index.js",
+    "dev": "npx tsx watch src/index.ts"
+  },
+  "type": "module",
+  "dependencies": {
+    "@hono/node-server": "^1.2.0",
+    "bcryptjs": "^2.4.3",
+    "class-validator": "^0.14.0",
+    "dotenv": "^16.3.1",
+    "hono": "^3.9.0",
+    "jsonwebtoken": "^9.0.2",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.4",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "tsx": "^4.6.2",
+    "typescript": "^5.2.2"
+  }
+}
