@@ -95,9 +95,21 @@ app.post("/api/books/buy", async (c: Context) => {
 		return errorJson(c, `The total price exceeds the limit of $${priceLimit}`);
 	}
 
+	const token = await getSignedCookie(c, JWT_SECRET, "token");
+	if (!token) {
+		return errorJson(c, "Token is not matching signature");
+	}
+
+	const isValid: boolean = await validateLogin(token);
+
+	if (!isValid) {
+		return errorJson(c, "Token is not valid");
+	}
+	
+	const decoded: any = jwt.decode(token);
 	const items: OrderItem[] = [];
 	const order = new Order();
-	order.owner = await userRepository.findOneBy({ username: "admin" }); // Hardcoded admin user
+	order.owner = await userRepository.findOneBy({ username: decoded.username });
 	await orderRepository.save(order); // Save the order first to generate defaults such as id
 
 	// Second loop to handle the actual purchase once everything is validated
