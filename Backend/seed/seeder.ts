@@ -24,16 +24,16 @@ await db.initialize();
 const resetDB = true;
 
 if (resetDB) {
-	await db.getRepository(Role).clear();
 	await db.getRepository(OrderItem).clear();
 	await db.getRepository(Book).clear();
 	await db.getRepository(Order).clear();
 	await db.getRepository(User).clear();
+	await db.getRepository(Role).clear();
 }
 
 await makeBook("Fellowship of the book", "J.R.R. Tolkien", 5, 10, false);
 await makeBook("Books and the chamber of books", "J.K Rowling", 10, 10, false);
-await makeBook("The return of the book", "J.R.R. Tolkien", 5, 10, false);
+await makeBook("The return of the book", "J.R.R. Tolkien", 5, 15, false);
 await makeBook("Limited Collectors Edition", "Fancy Author", 75, 10, true);
 
 const ownerRole = await makeRole("Owner", true);

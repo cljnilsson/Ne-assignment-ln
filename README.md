@@ -1,7 +1,7 @@
 ## NE Task
 
 ### Running
-Each project needs to be run seperately or launched via "docker-compose up"
+Each project needs to be run seperately or launched via "docker-compose up" from the base directory
 
 ### Assumptions
 * No payments are simulated, the price is merely displayed in the data
