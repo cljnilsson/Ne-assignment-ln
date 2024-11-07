@@ -1,12 +1,12 @@
 const baseUrl = "http://localhost:4000";
 
-interface ApiResponse {
+interface ApiResponse<T> {
 	success: boolean;
-	data: object;
+	data: T;
 	message: string;
 }
 
-async function request(path: string, requestMethod: "POST" | "GET" | "PATCH", body: object) : Promise<ApiResponse | null> {
+async function request<T>(path: string, requestMethod: "POST" | "GET" | "PATCH", body: object) : Promise<ApiResponse<T> | null> {
     const url = `${baseUrl}${path}`;
     const bodyJson = JSON.stringify(body);
     const PUBLIC_AUTH_PASSPHRASE = "honoiscool"; // Should be in .env file, at least it prevents some of the potential lazy spam
@@ -46,14 +46,14 @@ async function request(path: string, requestMethod: "POST" | "GET" | "PATCH", bo
     return null;
 }
 
-export function patchRequest(path: string, body: object) {
-    return request(path, "PATCH", body);
+export function patchRequest<T>(path: string, body: object) {
+    return request<T>(path, "PATCH", body);
 }
 
-export function postRequest(path: string, body: object) {
-    return request(path, "POST", body);
+export function postRequest<T>(path: string, body: object) {
+    return request<T>(path, "POST", body);
 }
 
-export function getRequest(path: string) {
-    return request(path, "GET", {});
+export function getRequest<T>(path: string) {
+    return request<T>(path, "GET", {});
 }

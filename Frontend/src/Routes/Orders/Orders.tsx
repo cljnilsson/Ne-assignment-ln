@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getRequest } from "../../Utils/RequestHelper";
-
-// Simplified Types
-type Book = {title: string, author: string, price: number};
-type Order = {books: {book: Book, quantity: number}[]};
+import Order from "../../types/order";
 
 function Orders() {
 	const [orders, setOrders] = useState<Order[]>([]);
 
 	async function onInit() {
-		const orderInfo = await getRequest("/api/books/own");
-        if(orderInfo && orderInfo.data && "orders" in orderInfo.data && Array.isArray(orderInfo.data.orders)) {
+		const orderInfo = await getRequest<{orders: Order[]}>("/api/books/own");
+        if(orderInfo && orderInfo.data) {
             setOrders(orderInfo.data.orders);
         }
 	}
