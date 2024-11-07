@@ -33,3 +33,25 @@ export async function validateLogin(token: string): Promise<boolean> {
 
 	return isValid;
 }
+
+export async function validateJwt(token: string | false): Promise<{ valid: boolean; errorMessage: string }> {
+	let error = "";
+	let isValid = false;
+
+	try {
+		if (!token) {
+			error = "Token is not matching signature";
+		} else {
+			isValid = await validateLogin(token);
+
+			if (!isValid) {
+				error = "Token is not valid";
+			}
+		}
+	} catch (err) {
+		error = "An error occurred during validation";
+		isValid = false;
+	}
+
+	return { valid: isValid, errorMessage: error };
+}

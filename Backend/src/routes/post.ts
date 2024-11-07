@@ -7,7 +7,7 @@ import Book from "../models/book.entity.js";
 import Order from "../models/order.entity.js";
 import OrderItem from "../models/orderItem.entity.js";
 import { defaultJson, errorJson } from "../utils/responses.js";
-import { validateLogin } from "../utils/auth.js";
+import { validateLogin, validateJwt } from "../utils/auth.js";
 import { Context } from "hono";
 import { getSignedCookie, setSignedCookie, deleteCookie } from "hono/cookie";
 
@@ -96,16 +96,12 @@ app.post("/api/books/buy", async (c: Context) => {
 	}
 
 	const token = await getSignedCookie(c, JWT_SECRET, "token");
-	if (!token) {
-		return errorJson(c, "Token is not matching signature");
+	const isValid = await validateJwt(token);
+
+	if (!isValid.valid || !token) {
+		return errorJson(c, isValid.errorMessage);
 	}
 
-	const isValid: boolean = await validateLogin(token);
-
-	if (!isValid) {
-		return errorJson(c, "Token is not valid");
-	}
-	
 	const decoded: any = jwt.decode(token);
 	const items: OrderItem[] = [];
 	const order = new Order();

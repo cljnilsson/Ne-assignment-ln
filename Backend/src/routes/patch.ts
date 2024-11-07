@@ -6,7 +6,7 @@ import db from "../db/db.js";
 import { defaultJson, errorJson } from "../utils/responses.js";
 import { Context } from "hono";
 import { getSignedCookie } from "hono/cookie";
-import { validateLogin } from "../utils/auth.js";
+import { validateJwt } from "../utils/auth.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -39,26 +39,25 @@ app.patch("/api/books/:id/restock/:amount", async (c: Context) => {
 
 	// Because we can't trust the client, make sure the user is logged in and has a staff role
 	const token = await getSignedCookie(c, JWT_SECRET, "token");
-	if (!token) {
-		return errorJson(c, "Token is not matching signature");
+	const isValid = await validateJwt(token);
+
+	if (!isValid.valid || !token) {
+		return errorJson(c, isValid.errorMessage);
 	}
 
-	const isValid: boolean = await validateLogin(token);
+	const decoded: any = jwt.decode(token);
+	const user = await userRepository.findOneBy({ username: decoded.username });
+	
+	if(user.role.staff !== true) {
+		return errorJson(c, "You do not have the required permissions to restock books.");
 
-	if (isValid) {
-		const decoded: any = jwt.decode(token);
-		const user = await userRepository.findOneBy({ username: decoded.username });
-		
-		if(user.role.staff !== true) {
-			return errorJson(c, "You do not have the required permissions to restock books.");
-
-		}
-		
-		book.stock += amount;
-		await bookRepository.save(book);
-
-		return defaultJson(c, {}, "Marked as restocked!");
 	}
+	
+	book.stock += amount;
+	await bookRepository.save(book);
+
+	return defaultJson(c, {}, "Marked as restocked!");
+	
 
 	return errorJson(c, "Token invalid");
 });
